@@ -24,15 +24,51 @@ class pokerGame:
 
 		return rankList
 
+	def ifinList(self, element, listtoCheck):
+		flag = 0
+		for i in listtoCheck:
+			if i[0] == element:
+				flag = 1
+		if flag == 1:
+			return 1
+		else:
+			return 0
+
+
+	def findPairs(self, hand):
+		outList = []
+		li = self.splitRank(hand)
+		print(li)
+		for i in range(len(li)):
+			pairs = 0
+			for j in range(len(li)):
+				if li[j] == li[i]:
+					pairs = pairs + 1
+
+			if self.ifinList(li[i], outList) == 0:
+				outList.append([li[i], pairs])
+		return (outList)
+
+
+	def check_fourOfKind(self, hand):
+		flag = 0
+		resultList = self.findPairs(hand)
+		for i in resultList:
+			if i[1] == 4:
+				flag = 1
+
+		if flag == 1:
+			return 1
+		else:
+			return 0
+
 
 	def check_StraightFlush(self, hand):
 		rankl = self.splitRank(hand)
-		print(rankl)
 		flag = 0
 		temp = rankl[0]
 		for i in range(len(rankl)):
 			if i != 0:
-				print(rankl[i], temp)
 				if rankl[i] == temp-1:
 					temp = rankl[i]
 				else:
@@ -104,10 +140,13 @@ class pokerGame:
 		if self.check_FullSuit(hand) == 1:
 			if self.check_StraightFlush(hand) == 1:
 				return 1
-			else:
-				return 4
-		elif self.check_Straight(hand) == 1:
+	
+		elif self.check_fourOfKind(hand) == 1:
+			return 2
+
+		elif self.check_StraightFlush(hand) == 1:
 			return 5
+
 		#highestCard = findHighest(hand)
 		return 10
 	
@@ -145,4 +184,5 @@ def getWinner(player_one, player_two):
 
 #getWinner(['S-6', 'C-2', 'D-9', 'D-4', 'H-K'], ['S-A', 'C-2', 'D-3', 'D-6', 'H-10'])
 #getWinner(['S-A', 'S-K', 'S-Q', 'S-J', 'S-10'], ['S-A', 'C-2', 'D-3', 'D-6', 'H-10'])
-getWinner(['S-A', 'S-K', 'S-Q', 'S-J', 'S-10'], ['S-5', 'S-4', 'S-3', 'S-2', 'S-A'])
+#getWinner(['S-A', 'S-K', 'S-Q', 'S-J', 'S-10'], ['S-5', 'S-4', 'S-3', 'S-2', 'S-A'])
+getWinner(['S-A', 'C-A', 'D-A', 'C-A', 'S-10'], ['S-5', 'S-4', 'S-3', 'S-2', 'S-A'])
